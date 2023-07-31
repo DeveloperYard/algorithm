@@ -1,2 +1,2 @@
 # algorithm
-for coding test with python
+## for coding test with python & java
