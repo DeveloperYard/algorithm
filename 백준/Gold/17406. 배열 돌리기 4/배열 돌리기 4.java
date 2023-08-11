@@ -1,7 +1,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main
+{
 	static int[][] map;
 	static int[][] ansMap;
 	
@@ -45,9 +46,23 @@ public class Main {
         for(int i = 0; i<K; i++) {
         	combiArr.add(br.readLine());
         }
+//        permutation(0); // 명령어 순열 생성
+        for(int i = 0; i<K; i++) {
+			combi[i] = i;
+		}
+        StringBuilder sb = new StringBuilder();
+    	for(int e : combi) {
+        	sb.append(e).append(" ");
+        }
+    	commandsSeqArr.add(sb.toString());
         
-        permutation(0); // 명령어 순열 생성
-        
+        while(nextPermutation()) {
+        	sb = new StringBuilder();
+        	for(int e : combi) {
+            	sb.append(e).append(" ");
+            }
+        	commandsSeqArr.add(sb.toString());
+        };
         
         for(int i = 0; i<commandsSeqArr.size(); i++) {
         	for(int j = 0; j <= N; j++) {
@@ -90,26 +105,33 @@ public class Main {
         }
         System.out.println(ans);
     }
-    
-	private static void permutation(int count) {
-    	if(count == K) {
-    		String str = "";
-    		for(int i = 0; i< K; i++) {
-    			str += combi[i]+" ";
-    		}
-    		commandsSeqArr.add(str);
-    		
-    		return;
-    	}
-    	for(int i = 0; i<K; i++) {
-    		if(visited[i]) continue;
-    		combi[count] = i;
-    		visited[i] = true;
-    		permutation(count+1);
-    		visited[i] = false;
-    	}
-    }
 	
+	private static boolean nextPermutation() {
+		
+		int i = K-1;
+		while(i > 0 && combi[i-1] > combi[i]) i--;
+		if(i == 0) {
+			return false;
+		}
+		
+		int j = K-1;
+		while(j >= i && combi[i-1] > combi[j]) j--;
+		
+		swap(i-1, j);
+		
+		int k = K-1;
+		while(i < k) {
+			swap(i++, k--);
+		}
+		
+		return true;
+	}
+	
+	private static void swap(int i, int j) {
+		int tmp = combi[i];
+		combi[i] = combi[j];
+		combi[j] = tmp;
+	}
 	
     private static void solve(int startRow, int startColumn , int lastRow, int lastColumn) {
 
