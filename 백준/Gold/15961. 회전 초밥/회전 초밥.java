@@ -32,10 +32,14 @@ public class Main {
         }
 
         arr[c]++;
-        long max = -1;
-        long cnt = Arrays.stream(arr)
-                .filter(i -> i > 0)
-                .count();
+        int max = -1;
+//        long cnt = Arrays.stream(arr)
+//                .filter(i -> i > 0)
+//                .count();
+        int cnt = 0;
+        for(int i = 0; i <= d; i++){
+            if(arr[i] > 0) cnt++;
+        }
 
         for(int i = 1; i < N; i++){
             if(max < cnt) max = cnt;
