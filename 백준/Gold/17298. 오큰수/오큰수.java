@@ -9,31 +9,25 @@ public class Main {
     static int N;
     static int[] arr;
     static int[] ans;
-    private static int k;
-    private static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        StringBuilder sb;
+
         N = Integer.parseInt(br.readLine());
         arr = new int[N];
         ans = new int[N];
 
         Arrays.fill(ans, -1);
 
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        st = new StringTokenizer(br.readLine(), " ");
 
         for(int i = 0; i < N; i++){
             arr[i] = Integer.parseInt(st.nextToken());
         }
-//        int j = 1000000;
-//        for(int i = 0; i < 1000000; i++){
-//            arr[i] = j--;
-//        }
-//        for(int i = 0; i < 1000000; i++){
-//            arr[i] = i+1;
-//        }
         calc();
-
+        sb = new StringBuilder();
         for(int e : ans)
             sb.append(e + " ");
 
