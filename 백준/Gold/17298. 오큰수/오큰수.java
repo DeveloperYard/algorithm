@@ -1,14 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int N;
     static int[] arr;
     static int[] ans;
+    static Stack<Integer> stack = new Stack<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,8 +24,21 @@ public class Main {
 
         for(int i = 0; i < N; i++){
             arr[i] = Integer.parseInt(st.nextToken());
+            if(stack.isEmpty()){
+                stack.push(arr[i]);
+            } else {
+                int curIdx = i-1;
+                while(!stack.isEmpty() && stack.peek() < arr[i]){
+                    if(ans[curIdx] > -1){
+                        curIdx--;
+                        continue;
+                    }
+                    ans[curIdx--] = arr[i];
+                    stack.pop();
+                }
+                stack.push(arr[i]);
+            }
         }
-        calc();
         sb = new StringBuilder();
         for(int e : ans)
             sb.append(e + " ");
@@ -34,24 +46,4 @@ public class Main {
         System.out.println(sb.toString());
     }
 
-    private static void calc(){
-        Stack<Integer> st = new Stack<>();
-
-        for(int i = 0; i < N; i++){
-            if(st.isEmpty()){
-                st.push(arr[i]);
-            } else {
-                int curIdx = i-1;
-                while(!st.isEmpty() && st.peek() < arr[i]){
-                    if(ans[curIdx] > -1){
-                        curIdx--;
-                        continue;
-                    }
-                    ans[curIdx--] = arr[i];
-                    st.pop();
-                }
-                st.push(arr[i]);
-            }
-        }
-    }
 }
