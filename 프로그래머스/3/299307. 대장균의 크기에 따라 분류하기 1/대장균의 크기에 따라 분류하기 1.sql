@@ -1,7 +1,7 @@
-select ID, (case
-    when SIZE_OF_COLONY <= '100' then 'LOW'
-    when SIZE_OF_COLONY > '100' AND SIZE_OF_COLONY <= 1000 then 'MEDIUM'
-    when SIZE_OF_COLONY > '1000' then 'HIGH'
-end) as SIZE
-from ECOLI_DATA
-
+select ID,
+    case
+        when size_of_colony <= 100 then 'LOW'
+        when size_of_colony > 100 and size_of_colony <= 1000 then 'MEDIUM'
+        when size_of_colony > 1000 then 'HIGH'
+    end as SIZE
+from ecoli_data
