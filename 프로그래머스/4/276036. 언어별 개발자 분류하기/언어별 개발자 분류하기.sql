@@ -1,31 +1,31 @@
--- 코드를 작성해주세요
-with FrontEnd AS (
-    select name, category, code
+# 다중 with
+WITH FrontEndSkills AS (
+    select *
     from skillcodes
     where category = 'Front End'
 ), PythonSkills AS (
-    select name, category, code
+    select *
     from skillcodes
     where name = 'Python'
 ), CsharpSkills AS (
-    select name, category, code
+    select *
     from skillcodes
     where name = 'C#'
-), DeveloperGrade AS (
-    select d.id, d.email, d.first_name, d.last_name,
-        CASE 
-            WHEN (d.SKILL_CODE & (SELECT CODE FROM PythonSkills)) = (SELECT CODE FROM PythonSkills)
-                 AND (d.SKILL_CODE & (SELECT SUM(CODE) FROM FrontEnd)) > 0 THEN 'A'
-            WHEN (d.SKILL_CODE & (SELECT CODE FROM CsharpSkills)) = (SELECT CODE FROM CsharpSkills) THEN 'B'
-            WHEN (d.SKILL_CODE & (SELECT SUM(CODE) FROM FrontEnd)) > 0 THEN 'C'
-            ELSE NULL
-        END AS GRADE
-    from developers d
+), DevelopersGrade AS (
+    select case 
+        when (d.skill_code & (select sum(code) from FrontEndSkills)) > 0
+            and (d.skill_code & (select code from PythonSkills)) = (select code from PythonSkills) then 'A'
+        when (d.skill_code & (select code from CsharpSkills)) = (select code from CsharpSkills) then 'B'
+        when (d.skill_code & (select sum(code) from FrontEndSkills)) > 0 then 'C'
+        else null
+    end as GRADE, d.id, d.email
+    from Developers d
 )
 
-
-select GRADE, d.ID, d.EMAIL
+select dg.GRADE,
+        d.ID,
+        d.EMAIL
 from developers d
-    left join DeveloperGrade dg on d.id = dg.id
+    left join DevelopersGrade dg on d.id = dg.id
 where GRADE is not null
-order by GRADE, ID asc;
+order by GRADE, ID;
